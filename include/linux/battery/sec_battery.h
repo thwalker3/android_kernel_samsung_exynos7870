@@ -42,7 +42,6 @@
 #define SEC_BAT_CURRENT_EVENT_AFC					0x0001
 #define SEC_BAT_CURRENT_EVENT_LOW_TEMP_SWELLING		0x0010
 #define SEC_BAT_CURRENT_EVENT_HIGH_TEMP_SWELLING	0x0020
-#define SEC_BAT_CURRENT_EVENT_LOW_TEMP				0x0080
 
 #define SIOP_EVENT_NONE 	0x0000
 #define SIOP_EVENT_WPC_CALL 	0x0001
@@ -77,6 +76,7 @@ enum swelling_mode_state {
 	SWELLING_MODE_NONE = 0,
 	SWELLING_MODE_CHARGING,
 	SWELLING_MODE_FULL,
+	SWELLING_MODE_ADDITIONAL,
 };
 #endif
 
@@ -103,8 +103,6 @@ struct sec_battery_info {
 #if defined(CONFIG_VBUS_NOTIFIER)
 	struct notifier_block vbus_nb;
 #endif
-	bool safety_timer_set;
-	bool lcd_status;
 
 	int status;
 	int health;
@@ -120,7 +118,6 @@ struct sec_battery_info {
 	int current_adc;
 
 	unsigned int capacity;			/* SOC (%) */
-	unsigned int input_voltage;		/* CHGIN/WCIN input voltage (V) */
 
 	struct mutex adclock;
 	struct adc_sample_info	adc_sample[ADC_CH_COUNT];
@@ -237,7 +234,6 @@ struct sec_battery_info {
 	struct mutex iolock;
 	int wired_input_current;
 	int wireless_input_current;
-	int input_current;
 	int charging_current;
 	int topoff_current;
 	unsigned int current_event;
@@ -308,10 +304,6 @@ struct sec_battery_info {
 	int step_charging_step;
 #endif
 
-	bool stop_timer;
-	unsigned long prev_safety_time;
-	unsigned long expired_time;
-	unsigned long cal_safety_time;
 	struct mutex misclock;
 	unsigned int misc_event;
 	unsigned int prev_misc_event;
@@ -446,9 +438,6 @@ enum {
 	FG_CYCLE,
 	FG_FULLCAPNOM,
 	BATTERY_CYCLE,
-#if defined(CONFIG_BATTERY_AGE_FORECAST_DETACHABLE)
-	BATT_AFTER_MANUFACTURED,
-#endif
 #endif
 	FG_FULL_VOLTAGE,
 	BATT_WPC_TEMP,
@@ -490,7 +479,6 @@ enum {
 	FACTORY_MODE_RELIEVE,
 	FACTORY_MODE_BYPASS,
 	BATT_WDT_CONTROL,
-	SAFETY_TIMER_SET,
 };
 
 #ifdef CONFIG_OF
