@@ -5,6 +5,9 @@ dtb-$(CONFIG_SOC_EXYNOS8890) += exynos8890-espresso8890.dtb exynos8890-espresso8
 dtb-$(CONFIG_SOC_EXYNOS8890) += exynos8890-evt1-smdk8890.dtb
 dtb-$(CONFIG_BOARD_GTAXLLTE) += exynos7870-gtaxllte_eur_open_00.dtb exynos7870-gtaxllte_eur_open_01.dtb exynos7870-gtaxllte_eur_open_04.dtb exynos7870-gtaxllte_eur_open_05.dtb
 dtb-$(CONFIG_BOARD_GTAXLWIFI) += exynos7870-gtaxlwifi_eur_open_00.dtb exynos7870-gtaxlwifi_eur_open_04.dtb exynos7870-gtaxlwifi_eur_open_05.dtb
+#dtb-$(CONFIG_BOARD_GTANOTEXLWIFI) += exynos7870-gtanotexlwifi_kor_open_00.dtb exynos7870-gtanotexlwifi_kor_open_02.dtb
+# Use monolithic dtbs from samsung ROM
+dtb-$(CONFIG_BOARD_GTANOTEXLWIFI) += exynos7870-gtanotexlwifi_00.dtb exynos7870-gtanotexlwifi_02.dtb
 
 targets += dtbs
 

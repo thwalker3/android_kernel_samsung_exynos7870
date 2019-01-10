@@ -241,6 +241,9 @@ config BOARD_GTAXLLTE
 config BOARD_GTAXLWIFI
 	bool "Tab A 2016 WIFI"
 
+config BOARD_GTANOTEXLWIFI
+	bool "Tab A 2016 WIFI w/ S-PEN"
+
 config SOC_EXYNOS8890
 	bool "Samsung EXYNOS8890"
 	select ARCH_EXYNOS
