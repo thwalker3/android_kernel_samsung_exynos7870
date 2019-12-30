@@ -2383,6 +2383,7 @@ end_fw_update:
 	wacom_enable_pdct_irq(wac_i2c, true);
 }
 
+#if defined(CONFIG_USB_TYPEC_MANAGER_NOTIFIER)
 static void wacom_usb_typec_work(struct work_struct *work)
 {
 	struct wacom_i2c *wac_i2c = container_of(work, struct wacom_i2c, usb_typec_work.work);
@@ -2515,6 +2516,8 @@ static void wacom_usb_typec_nb_register_work(struct work_struct *work)
 		input_err(true, &wac_i2c->client->dev, "%s: success\n", __func__);
 	}
 }
+
+#endif
 
 static int wacom_request_gpio(struct i2c_client *client,
 			      struct wacom_g5_platform_data *pdata)
@@ -2935,12 +2938,16 @@ static int wacom_i2c_probe(struct i2c_client *client,
 
 	device_init_wakeup(&client->dev, true);
 
+#if defined(CONFIG_USB_TYPEC_MANAGER_NOTIFIER)
+
 	if (wac_i2c->pdata->table_swap) {
 		INIT_DELAYED_WORK(&wac_i2c->usb_typec_work, wacom_usb_typec_work);
 		INIT_DELAYED_WORK(&wac_i2c->typec_nb_reg_work,
 					wacom_usb_typec_nb_register_work);
 		schedule_delayed_work(&wac_i2c->typec_nb_reg_work, msecs_to_jiffies(10));
 	}
+
+#endif
 
 	input_info(true, &client->dev, "probe done\n");
 
